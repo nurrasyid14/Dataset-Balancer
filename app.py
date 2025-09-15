@@ -9,13 +9,30 @@ st.set_page_config(page_title="Dataset Balancer", layout="wide")
 
 st.title("Dataset Balancer & Model Evaluator")
 
-# Upload CSV
-uploaded_file = st.file_uploader("Upload your dataset (CSV)", type=["csv"])
+# Upload Dataset
+uploaded_file = st.file_uploader(
+    "Upload your dataset (CSV/XLS/XLSX/TSV/TSV.GZ)", 
+    type=["csv", "xls", "xlsx", "tsv", "tsv.gz"]
+)
 
 if uploaded_file:
-    df = pd.read_csv(uploaded_file)
-    st.subheader("Preview of Your Dataset")
-    st.write(df.head())
+    file_name = uploaded_file.name.lower()
+
+    # Baca sesuai tipe file
+    if file_name.endswith(".csv"):
+        df = pd.read_csv(uploaded_file)
+    elif file_name.endswith((".tsv", ".tsv.gz")):
+        df = pd.read_csv(uploaded_file, sep="\t")
+    elif file_name.endswith((".xls", ".xlsx")):
+        df = pd.read_excel(uploaded_file)
+    else:
+        st.error("⚠️ Format file tidak didukung.")
+        df = None
+
+    if df is not None:
+        st.subheader("Preview of Your Dataset")
+        st.write(df.head())
+
 
     target_column = st.selectbox("Select Target Column", df.columns)
 

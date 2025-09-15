@@ -10,11 +10,12 @@ import warnings
 class Preprocessor:
     def __init__(self, df: pd.DataFrame, target_column: str, random_state: int = 42):
         """
-        Handles preprocessing tasks:
-        - Encodes target labels into consecutive integers
-        - Provides utilities for splitting, imputing, and scaling
+        Melakukan preprocessing pada dataset:
+            - Mengubah label target menjadi bilangan bulat berurutan
+            - Menyediakan utilitas untuk splitting, imputasi, dan scaling
 
-        Parameters
+
+        Parameter:
         ----------
         df : pd.DataFrame
             Input dataset
@@ -46,7 +47,7 @@ class Preprocessor:
         self, test_size: float = 0.2
     ) -> Tuple[pd.DataFrame, pd.DataFrame, pd.Series, pd.Series]:
         """
-        Splits dataset into train and test sets with stratification.
+        Melakukan Splitting pada dataset menjadi Test & Train dengan Stratifikasi
         """
         return train_test_split(
             self.X,
@@ -58,23 +59,23 @@ class Preprocessor:
 
     def get_imputer(self, strategy: str = "mean") -> SimpleImputer:
         """
-        Returns an imputer for missing values.
+        Mengisi missing values dengan Mean.
         """
         return SimpleImputer(strategy=strategy)
 
     def get_scaler(self, method: str = "standard"):
         """
-        Returns a scaler for feature scaling.
+        Memanggil StandardScaler untuk standarisasi Dataset.
         """
         if method == "standard":
             return StandardScaler()
         elif method == "minmax":
             return MinMaxScaler()
         else:
-            raise ValueError("Unsupported scaling method")
+            raise ValueError("Metode scaling Invalid. Gunakan 'standard' atau 'minmax'.")
 
     def decode_labels(self, y_pred):
         """
-        Converts encoded labels back to original form.
+        Mengubah kembali Label ke bentuk semula.
         """
         return self.label_encoder.inverse_transform(y_pred)

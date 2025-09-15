@@ -10,6 +10,22 @@ import warnings
 
 class Balancer:
     def __init__(self, df: pd.DataFrame, target_column: str, random_state: int = 42):
+        """
+        Menyeimangkan dataset menggunakan berbagai teknik balancing:
+            - SMOTE : Synthetic Minority Over-sampling Technique
+            - RandomUnderSampler : Random Under Sampling
+            - SMOTEENN : Kombinasi SMOTE dan Edited Nearest Neighbors
+            - SMOTETomek : Kombinasi SMOTE dan Tomek Links
+        Parameter:
+        ----------
+        df : pd.DataFrame
+            Dataset input
+        target_column : str
+            Nama kolom target
+        random_state : int, optional
+            Random state for reproducibility
+
+        """
         self.df = df
         self.target_column = target_column
         self.random_state = random_state
@@ -20,6 +36,15 @@ class Balancer:
         warnings.filterwarnings("ignore")
 
     def plot_class_distribution(self, title: str = "Class Distribution", use_streamlit: bool = False):
+        """
+        Plot Distribusi Kelas
+        Parameter:
+        ----------
+        title : str, optional
+            Title of the plot
+        use_streamlit : bool, optional
+            Whether to use Streamlit for plotting
+        """
         import streamlit as st
         class_counts = self.y.value_counts()
         fig = px.bar(
@@ -34,6 +59,19 @@ class Balancer:
             return fig
 
     def balance_data(self, method: str = 'SMOTE') -> Tuple[pd.DataFrame, pd.Series]:
+        """
+        Menyeimbangkan dataset menggunakan metode yang dipilih.
+        Parameter:
+        method : str, optional
+            Metode balancing yang digunakan. Pilihan: 'SMOTE', 'RandomUnderSampler', 'SMOTEENN', 'SMOTETomek'
+        Returns:
+        -------
+        X_res : pd.DataFrame
+            Fitur setelah balancing
+        y_res : pd.Series
+            Target setelah balancing
+        
+        """
         if method == 'SMOTE':
             sampler = SMOTE(random_state=self.random_state)
         elif method == 'RandomUnderSampler':

@@ -17,7 +17,7 @@ if uploaded_file:
     st.subheader("Preview of Your Dataset")
     st.write(df.head())
 
-    target_column = st.selectbox("🎯 Select Target Column", df.columns)
+    target_column = st.selectbox("Select Target Column", df.columns)
 
     if target_column:
         balance_method = st.selectbox(
